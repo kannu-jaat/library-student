@@ -1,12 +1,32 @@
-// Home screen
 import 'package:flutter/material.dart';
+import '../../services/notification_service.dart';
 import '../attendance/attendance_screen.dart';
 import '../fees/fees_screen.dart';
 import '../notices/notices_screen.dart';
 import '../profile/profile_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  
+  @override
+  void initState() {
+    super.initState();
+    _setupDeviceAndNotifications();
+  }
+
+  Future<void> _setupDeviceAndNotifications() async {
+    // FCM Initialize karega aur Token save karega
+    await NotificationService.initialize();
+    
+    // User se Battery Optimization band karne ko kahega
+    await NotificationService.checkAndRequestBatteryOptimization();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,34 +67,10 @@ class HomeScreen extends StatelessWidget {
                   crossAxisSpacing: 20,
                   mainAxisSpacing: 20,
                   children: [
-                    _buildMenuCard(
-                      context, 
-                      'Attendance', 
-                      Icons.qr_code_scanner, 
-                      Colors.blue, 
-                      const AttendanceScreen()
-                    ),
-                    _buildMenuCard(
-                      context, 
-                      'Fee Status', 
-                      Icons.payment, 
-                      Colors.green, 
-                      const FeesScreen()
-                    ),
-                    _buildMenuCard(
-                      context, 
-                      'Notices', 
-                      Icons.campaign, 
-                      Colors.orange, 
-                      const NoticesScreen()
-                    ),
-                    _buildMenuCard(
-                      context, 
-                      'Profile', 
-                      Icons.person, 
-                      Colors.purple, 
-                      const ProfileScreen()
-                    ),
+                    _buildMenuCard(context, 'Attendance', Icons.qr_code_scanner, Colors.blue, const AttendanceScreen()),
+                    _buildMenuCard(context, 'Fee Status', Icons.payment, Colors.green, const FeesScreen()),
+                    _buildMenuCard(context, 'Notices', Icons.campaign, Colors.orange, const NoticesScreen()),
+                    _buildMenuCard(context, 'Profile', Icons.person, Colors.purple, const ProfileScreen()),
                   ],
                 ),
               ),
