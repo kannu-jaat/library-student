@@ -10,6 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  network_info_plus: ^4.1.0
+
 
   # Firebase Packages
   firebase_core: ^2.15.0
