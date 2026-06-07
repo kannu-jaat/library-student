@@ -27,11 +27,11 @@ jobs:
           flutter-version: '3.19.0' 
           channel: 'stable'
 
-      # YEH NAYA STEP HAI (Yeh automatically Android folder ko theek karega)
-      - name: Fix Android Folder
+      # YEH NAYA JADOO HAI: Jo Android folder banakar uska version theek karega
+      - name: Fix Android Folder & Min SDK
         run: |
-          rm -rf android
           flutter create --platforms=android .
+          sed -i 's/flutter.minSdkVersion/24/g' android/app/build.gradle
 
       - name: Get Dependencies
         run: flutter pub get
