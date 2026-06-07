@@ -121,12 +121,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 40),
 
               // Submit Button
-              ElevatedButton(
-                onPressed: () {
-                  // TODO: Yahan Firebase par data save karne ka aur Admin Approval me bhejne ka logic aayega
-                  print("Registration Submitted");
-                },
-                child: const Text('SUBMIT REGISTRATION', style: TextStyle(fontSize: 16)),
+ElevatedButton(
+  onPressed: () {
+    // Navigate to Pending Screen
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const PendingScreen()),
+    );
+  },
+  child: const Text('SUBMIT REGISTRATION', style: TextStyle(fontSize: 16)),
+),
+
               ),
             ],
           ),
