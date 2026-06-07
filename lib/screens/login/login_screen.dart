@@ -1,9 +1,5 @@
-// Login screen
-
 import 'package:flutter/material.dart';
-import '../register/register_screen.dart';
-
-// Note: Register screen banne ke baad hum uska import yahan add karenge
+import '../register/register_screen.dart'; // Naya import yahan add kiya hai
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -87,8 +83,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Text("Don't have an account?"),
                   TextButton(
                     onPressed: () {
-                      // TODO: Register Screen par navigate karna
-                      print("Go to Register Screen");
+                      // Navigate to Register Screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const RegisterScreen()),
+                      );
                     },
                     child: const Text('Register Now'),
                   ),
