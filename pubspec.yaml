@@ -2,15 +2,36 @@ name: library_student
 description: A Flutter app for library and student management system.
 publish_to: 'none'
 version: 1.0.0+1
+
 environment:
   sdk: ">=3.0.0 <4.0.0"
+
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+
+  # Firebase Packages
+  firebase_core: ^2.15.0
+  firebase_auth: ^4.6.0
+  firebase_database: ^10.2.0
+  firebase_storage: ^11.2.0
+  firebase_messaging: ^14.6.0
+
+  # App Features & Utilities
+  camera: ^0.10.5 # Auto Selfie ke liye
+  mobile_scanner: ^3.3.0 # QR Code Scanner ke liye
+  permission_handler: ^10.2.0
+  connectivity_plus: ^4.0.1
+  shared_preferences: ^2.1.1
+  cached_network_image: ^3.2.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^2.0.0
+
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/
