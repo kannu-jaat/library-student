@@ -13,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Aapka code download karega
+      # 1. Aapka code download karega (Updated to v4)
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # 2. Java setup karega (Android build ke liye zaroori hai)
+      # 2. Java setup karega (Updated to v4)
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
@@ -28,7 +28,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.0' # Latest stable version
+          flutter-version: '3.19.0' 
           channel: 'stable'
 
       # 4. Saare packages download karega
@@ -39,9 +39,9 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
-      # 6. APK ko download ke liye save karega
+      # 6. APK ko download ke liye save karega (Updated to v4)
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Student-App-Release
           path: build/app/outputs/flutter-apk/app-release.apk
