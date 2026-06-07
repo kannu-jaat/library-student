@@ -1,6 +1,8 @@
 // Register screen
 
 import 'package:flutter/material.dart';
+import '../pending/pending_screen.dart';
+
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
