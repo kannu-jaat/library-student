@@ -1,6 +1,5 @@
-// Profile screen
-
 import 'package:flutter/material.dart';
+import '../../services/auth_service.dart';
 import '../login/login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -13,14 +12,18 @@ class ProfileScreen extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-          onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
-              (route) => false,
-            );
+          onPressed: () async {
+            // Local Session delete karega aur Login par bhej dega
+            await AuthService.logout();
+            if (context.mounted) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                (route) => false,
+              );
+            }
           },
-          child: const Text('LOGOUT'),
+          child: const Text('LOGOUT', style: TextStyle(color: Colors.white)),
         ),
       ),
     );
