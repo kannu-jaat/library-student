@@ -1,6 +1,8 @@
 // Login screen
 
 import 'package:flutter/material.dart';
+import '../register/register_screen.dart';
+
 // Note: Register screen banne ke baad hum uska import yahan add karenge
 
 class LoginScreen extends StatefulWidget {
