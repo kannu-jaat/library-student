@@ -1,39 +1,30 @@
 name: library_student
-description: A Flutter app for library and student management system.
+description: A new Flutter project for Krishna Library.
 publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: '>=3.2.3 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.6
+  
+  firebase_core: ^2.25.4
+  firebase_database: ^10.4.2
+  firebase_messaging: ^14.7.15
+  shared_preferences: ^2.2.2
+  camera: ^0.10.5+9
+  mobile_scanner: ^3.5.5
+  permission_handler: ^11.3.0
   network_info_plus: ^4.1.0
   image_picker: ^1.1.2
-
-  # Firebase Packages
-  firebase_core: ^2.15.0
-  firebase_auth: ^4.6.0
-  firebase_database: ^10.2.0
-  firebase_storage: ^11.2.0
-  firebase_messaging: ^14.6.0
-
-  # App Features & Utilities
-  camera: ^0.10.5 # Auto Selfie ke liye
-  mobile_scanner: ^3.3.0 # QR Code Scanner ke liye
-  permission_handler: ^10.2.0
-  connectivity_plus: ^4.0.1
-  shared_preferences: ^2.1.1
-  cached_network_image: ^3.2.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.0
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/images/
