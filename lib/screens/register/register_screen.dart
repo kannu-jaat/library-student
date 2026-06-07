@@ -1,8 +1,6 @@
-// Register screen
-
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 import '../pending/pending_screen.dart';
-
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -16,6 +14,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  
+  bool _isLoading = false; // Loading animation ke liye
 
   @override
   void dispose() {
@@ -24,6 +24,59 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _addressController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _submitRegistration() async {
+    // Agar form khali hai toh error dikhayein
+    if (_nameController.text.isEmpty || _mobileController.text.isEmpty || 
+        _passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill all required fields')),
+      );
+      return;
+    }
+
+    setState(() { _isLoading = true; });
+
+    try {
+      // Firebase Database ka reference
+      final DatabaseReference ref = FirebaseDatabase.instance.ref("users");
+      
+      // Mobile number ko hi hum user ka unique ID (username) bana rahe hain
+      String userId = _mobileController.text.trim();
+
+      // Database me save hone wala data
+      Map<String, dynamic> studentData = {
+        "name": _nameController.text.trim(),
+        "mobile": userId,
+        "address": _addressController.text.trim(),
+        "password": _passwordController.text.trim(),
+        "status": "pending", // Default status pending rahega
+        "photo": "", // Photo upload ka logic baad me aayega
+        "registeredAt": DateTime.now().toIso8601String(),
+      };
+
+      // Data save karein
+      await ref.child(userId).set(studentData);
+
+      // Save hone ke baad Pending Screen par bhej dein
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const PendingScreen()),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: ${e.toString()}')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() { _isLoading = false; });
+      }
+    }
   }
 
   @override
@@ -38,7 +91,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Photo Upload Placeholder
               Center(
                 child: Stack(
                   children: [
@@ -50,11 +102,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.blue, width: 2),
                       ),
-                      child: const Icon(
-                        Icons.person,
-                        size: 80,
-                        color: Colors.grey,
-                      ),
+                      child: const Icon(Icons.person, size: 80, color: Colors.grey),
                     ),
                     Positioned(
                       bottom: 0,
@@ -65,74 +113,44 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           color: Colors.blue,
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(
-                          Icons.camera_alt,
-                          color: Colors.white,
-                          size: 20,
-                        ),
+                        child: const Icon(Icons.camera_alt, color: Colors.white, size: 20),
                       ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 30),
-
-              // Name Field
               TextField(
                 controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Full Name',
-                  prefixIcon: Icon(Icons.badge),
-                ),
+                decoration: const InputDecoration(labelText: 'Full Name', prefixIcon: Icon(Icons.badge)),
               ),
               const SizedBox(height: 20),
-
-              // Mobile Field
               TextField(
                 controller: _mobileController,
                 keyboardType: TextInputType.phone,
-                decoration: const InputDecoration(
-                  labelText: 'Mobile Number',
-                  prefixIcon: Icon(Icons.phone),
-                ),
+                decoration: const InputDecoration(labelText: 'Mobile Number', prefixIcon: Icon(Icons.phone)),
               ),
               const SizedBox(height: 20),
-
-              // Address Field
               TextField(
                 controller: _addressController,
                 maxLines: 2,
-                decoration: const InputDecoration(
-                  labelText: 'Address',
-                  prefixIcon: Icon(Icons.location_on),
-                ),
+                decoration: const InputDecoration(labelText: 'Address', prefixIcon: Icon(Icons.location_on)),
               ),
               const SizedBox(height: 20),
-
-              // Password Field
               TextField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Create Password',
-                  prefixIcon: Icon(Icons.lock),
-                ),
+                decoration: const InputDecoration(labelText: 'Create Password', prefixIcon: Icon(Icons.lock)),
               ),
               const SizedBox(height: 40),
-
+              
               // Submit Button
-ElevatedButton(
-  onPressed: () {
-    // Navigate to Pending Screen
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const PendingScreen()),
-    );
-  },
-  child: const Text('SUBMIT REGISTRATION', style: TextStyle(fontSize: 16)),
-),
-
-              ),
+              _isLoading 
+                ? const Center(child: CircularProgressIndicator())
+                : ElevatedButton(
+                    onPressed: _submitRegistration,
+                    child: const Text('SUBMIT REGISTRATION', style: TextStyle(fontSize: 16)),
+                  ),
             ],
           ),
         ),
